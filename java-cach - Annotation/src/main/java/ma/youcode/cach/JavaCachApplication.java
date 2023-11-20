@@ -41,11 +41,12 @@ public class JavaCachApplication {
                         .setReadThrough(true);
         return config;
     }
-    @Bean(value = "employeecache", destroyMethod = "close")
+    @Bean(value = "employeCache", destroyMethod = "close")
     public Cache<Integer, Employes> createEmployeCache(CacheManager cacheManager,
                                                      @Qualifier("employeCachConfig")
                                                      MutableConfiguration<Integer, Employes> config){
-        return cacheManager.createCache("name", config);
+        Cache<Integer, Employes> cache = cacheManager.createCache("name", config);
+        return cache;
     }
 
 }

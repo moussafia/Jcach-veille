@@ -1,50 +1,56 @@
 package ma.youcode.cach;
 
+import ma.youcode.cach.Repository.EmployeInter;
 import ma.youcode.cach.entities.Employes;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.bind.annotation.*;
 
 import javax.cache.Cache;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import javax.cache.annotation.*;
 @RestController
 @RequestMapping(value = "/employe", produces = "application/Json")
+@EnableCaching
+@CacheDefaults(cacheName = "employee")
 public class EmployeController {
 
     private static final Log log = LogFactory.getLog(EmployeController.class);
 
     private Cache<Integer, Employes> cacheEmploye;
+    private final EmployeInter employeInter;
 
-    public EmployeController(Cache<Integer, Employes> cacheEmploye) {
+    public EmployeController(Cache<Integer, Employes> cacheEmploye,
+                             EmployeInter employeInter) {
 
         this.cacheEmploye = cacheEmploye;
+        this.employeInter = employeInter;
+    }
+
+    @RequestMapping(value = "/{id}", method =RequestMethod.POST , consumes = "application/json")
+    @CachePut
+    public boolean post(@PathVariable("id")
+            @CacheKey
+            Integer id,
+            @RequestBody
+            @CacheValue
+            Employes employes) throws Exception{
+        employeInter.save(employes);
+        return true;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Employes get(@PathVariable("id") Integer id){
+    @CacheResult
+    public Employes get(@PathVariable Integer id)throws Exception{
         log.info("get for id" + id);
-        return cacheEmploye.get(id);
+        return employeInter.findById(id).get();
     }
-    @RequestMapping(method =RequestMethod.POST , consumes = "application/json")
-    public boolean post(@RequestBody List<Employes> employes){
-//        log.info("get for id" + employes);
-//        cacheEmploye.put(employes.getId(), employes);
-      Map<Integer, Employes> map = employes
-              .stream()
-              .collect(Collectors.toMap(Employes::getId,entry->entry));
-      cacheEmploye.putAll(map);
-        return true;
-    }
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "deleteAll", method = RequestMethod.GET)
     @ResponseBody
-    public Map<Integer, Employes> getAll(@RequestParam("keys") Set<Integer> key){
-        return cacheEmploye.getAll(key);
+    @CacheRemoveAll
+    public void deleteAll() throws Exception{
+        employeInter.deleteAll();
     }
 }
 //putAll accept map as a parameter and return void
