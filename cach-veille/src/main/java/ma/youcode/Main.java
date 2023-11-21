@@ -5,6 +5,8 @@ import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
 import javax.cache.spi.CachingProvider;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,6 +19,6 @@ public class Main {
         cache.put(2,"hya");
         cache.put(3,"howa");
         cache.put(4,"ana");
-        cache.forEach(entry -> System.out.println(entry.getValue()) );
+        cache.forEach(entry -> System.out.println(entry.getValue()));
     }
 }

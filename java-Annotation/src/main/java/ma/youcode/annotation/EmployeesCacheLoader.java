@@ -1,7 +1,7 @@
-package ma.youcode.cach;
+package ma.youcode.annotation;
 
-import ma.youcode.cach.Repository.EmployeInter;
-import ma.youcode.cach.entities.Employes;
+import ma.youcode.annotation.Repository.EmployeInter;
+import ma.youcode.annotation.entities.Employes;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.stereotype.Component;

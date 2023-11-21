@@ -1,9 +1,10 @@
-package ma.youcode.cach;
+package ma.youcode.annotation;
 
-import ma.youcode.cach.entities.Employes;
+import ma.youcode.annotation.entities.Employes;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 
 import javax.cache.Cache;
@@ -34,19 +35,23 @@ public class JavaCachApplication {
     public MutableConfiguration<Integer, Employes> CreateEmloyeCacheConfig(){
         MutableConfiguration<Integer, Employes> config =
                 new MutableConfiguration<Integer, Employes>()
-                        .setTypes(Integer.class, Employes.class)//runtime
                         .setCacheWriterFactory(new EmployeeCacheWriterFactory())
                         .setWriteThrough(true)
                         .setCacheLoaderFactory(new EmployeesCacheLoaderFactory())
                         .setReadThrough(true);
         return config;
     }
-    @Bean(value = "employeCache", destroyMethod = "close")
+    @Bean(value = "employeecache", destroyMethod = "close")
     public Cache<Integer, Employes> createEmployeCache(CacheManager cacheManager,
                                                      @Qualifier("employeCachConfig")
                                                      MutableConfiguration<Integer, Employes> config){
-        Cache<Integer, Employes> cache = cacheManager.createCache("name", config);
-        return cache;
+        return cacheManager.createCache("employe", config);
     }
+
+    @Bean
+    public JCacheCacheManager cacheCacheManager(CacheManager cacheManager){
+        return new JCacheCacheManager(cacheManager);
+    }
+
 
 }

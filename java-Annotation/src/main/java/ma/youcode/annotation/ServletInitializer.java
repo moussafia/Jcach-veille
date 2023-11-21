@@ -1,4 +1,4 @@
-package ma.youcode.cach;
+package ma.youcode.annotation;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

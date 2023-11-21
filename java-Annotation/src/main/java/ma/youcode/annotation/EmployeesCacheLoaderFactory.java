@@ -1,4 +1,4 @@
-package ma.youcode.cach;
+package ma.youcode.annotation;
 
 import javax.cache.configuration.Factory;
 

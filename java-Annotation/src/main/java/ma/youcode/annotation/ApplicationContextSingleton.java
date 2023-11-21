@@ -1,15 +1,12 @@
-package ma.youcode.cach;
-import org.springframework.beans.factory.annotation.Autowired;
+package ma.youcode.annotation;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /* allows access to spring application context by the singleton  */
-@Service
+@Component
 public class ApplicationContextSingleton {
     private static ApplicationContext applicationContext;
-
-    public static void setApplicationContext(ApplicationContext applicationContext) {
+    public ApplicationContextSingleton(ApplicationContext applicationContext) {
         ApplicationContextSingleton.applicationContext = applicationContext;
     }
 

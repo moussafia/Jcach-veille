@@ -1,9 +1,10 @@
-package ma.youcode.cach;
+package ma.youcode.annotation;
 
-import ma.youcode.cach.Repository.EmployeInter;
-import ma.youcode.cach.entities.Employes;
+import ma.youcode.annotation.Repository.EmployeInter;
+import ma.youcode.annotation.entities.Employes;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.cache.Cache;
@@ -18,7 +19,9 @@ public class EmployesCachesWriter implements CacheWriter<Integer, Employes> {
     private EmployeInter employeInter;
     private static final Log log = LogFactory.getLog(EmployesCachesWriter.class);
 
+    @Autowired
     public EmployesCachesWriter(EmployeInter employeInter) {
+
         this.employeInter = employeInter;
     }
 
@@ -37,6 +40,7 @@ public class EmployesCachesWriter implements CacheWriter<Integer, Employes> {
                 .collect(Collectors.toSet());
         employeInter.saveAll(employes);
     }
+
     @Override
     public void delete(Object o) throws CacheWriterException {
         log.info("delete called with entry "+ o);

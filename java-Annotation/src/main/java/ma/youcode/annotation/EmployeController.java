@@ -1,7 +1,7 @@
-package ma.youcode.cach;
+package ma.youcode.annotation;
 
-import ma.youcode.cach.Repository.EmployeInter;
-import ma.youcode.cach.entities.Employes;
+import ma.youcode.annotation.Repository.EmployeInter;
+import ma.youcode.annotation.entities.Employes;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.cache.annotation.EnableCaching;
@@ -12,7 +12,7 @@ import javax.cache.annotation.*;
 @RestController
 @RequestMapping(value = "/employe", produces = "application/Json")
 @EnableCaching
-@CacheDefaults(cacheName = "employee")
+@CacheDefaults(cacheName = "employe")
 public class EmployeController {
 
     private static final Log log = LogFactory.getLog(EmployeController.class);
@@ -29,25 +29,24 @@ public class EmployeController {
 
     @RequestMapping(value = "/{id}", method =RequestMethod.POST , consumes = "application/json")
     @CachePut
-    public boolean post(@PathVariable("id")
-            @CacheKey
-            Integer id,
-            @RequestBody
-            @CacheValue
-            Employes employes) throws Exception{
+    public boolean post(@PathVariable
+                        @CacheKey
+                        Integer id,
+                        @RequestBody
+                        @CacheValue
+                        Employes employes){
+        employes.setId(id);
         employeInter.save(employes);
         return true;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
     @CacheResult
-    public Employes get(@PathVariable Integer id)throws Exception{
+    public Employes get(@PathVariable("id") Integer id){
         log.info("get for id" + id);
         return employeInter.findById(id).get();
     }
-    @RequestMapping(value = "deleteAll", method = RequestMethod.GET)
-    @ResponseBody
+    @RequestMapping(value = "/deleteAll", method = RequestMethod.GET)
     @CacheRemoveAll
     public void deleteAll() throws Exception{
         employeInter.deleteAll();

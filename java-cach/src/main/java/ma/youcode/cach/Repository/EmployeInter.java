@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Set;
 
 @Repository
-public interface EmployeInter extends JpaRepository<Employes, Integer> {
+public interface EmployeInter extends CrudRepository<Employes, Integer> {
 
     @Query(value = "DELETE FROM Employes WHERE id IN :keys")
     void deleteAll(@Param("keys") Set<Integer> keys);

@@ -1,13 +1,9 @@
-package ma.youcode.cach.entities;
+package ma.youcode.annotation.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 public class Employes implements Serializable {
