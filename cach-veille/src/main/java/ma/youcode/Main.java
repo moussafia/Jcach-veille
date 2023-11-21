@@ -13,6 +13,7 @@ public class Main {
 
         CachingProvider provider = Caching.getCachingProvider();
         CacheManager manager = provider.getCacheManager();
+        CacheManager manager1 = provider.getCacheManager();
         MutableConfiguration<Integer, String> configuration = new MutableConfiguration<>();
         Cache<Integer, String> cache = manager.createCache("name", configuration);
         cache.put(1,"mohammed");
